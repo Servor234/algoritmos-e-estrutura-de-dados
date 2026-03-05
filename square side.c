@@ -5,13 +5,13 @@ int main(){
     float x, p, a, d;
     const float y;
 
-    printf("lado do seu quadrado?\n");
+    printf("what is the side of your square?\n");
     scanf("%f", &x);
 
     p = x*4;
     a = x*x;
     d = x*sqrt(2);
 
-    printf("\tseu perimetro eh %.0f\n\tsua area eh %.0f\n\tsua diagonal eh %.2f", p, a, d);
+    printf("\tyour perimetrer is %.0f\n\tyour area is %.0f\n\tyour diagonal is %.2f", p, a, d);
     return 0;
 }
