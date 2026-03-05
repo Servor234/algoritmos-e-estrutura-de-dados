@@ -3,14 +3,8 @@
 int main(){
     int x=0,y=0,z=0;
 
-    printf("type a number\n");
-    scanf("%d", &x);
-
-    printf("type a number\n");
-    scanf("%d", &y);
-
-    printf("type a number\n");
-    scanf("%d", &z);
+    printf("type three number\n");
+    scanf("%d %d %d", &x, &y, &z);
 
     if (x>y && x>z){
         printf("\nthe greatest number is:%d", x);
@@ -23,6 +17,4 @@ int main(){
     }
 
     return 0;
-
-
 }
