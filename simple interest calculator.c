@@ -14,4 +14,5 @@ int main() {
 
     printf("\n\tyour deposit increased in %.2f\n\tyour new total is %.2f", g, r);
 
+    return 0;
 }
