@@ -30,6 +30,9 @@ int main(){
         d=a/b;
         printf("%d\n", d);
         break;
-        }
 
+    default:
+        printf("invalid number\n");
+        }
+    return 0;
     }
