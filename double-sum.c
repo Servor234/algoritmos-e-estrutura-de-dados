@@ -11,6 +11,7 @@ int dob(int d){
 int main(){
     int a,b,c;
 
+    printf("Type two numbers\n);
     scanf("%d %d", &a, &b);
 
     c=dob(som(a,b));
