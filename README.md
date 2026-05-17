@@ -1,1 +1,1 @@
-main tab for studies
+# algoritmos-e-estrutura-de-dados
