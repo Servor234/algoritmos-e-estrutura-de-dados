@@ -9,7 +9,6 @@ typedef struct{
 } Robo;
 
 char* condi(Robo unidade){
-    for(int i=0;i<4;i++){
         if(unidade.bateria<20){
             return "critico";
         }else if(unidade.bateria>=20 && unidade.bateria<50){
@@ -17,7 +16,6 @@ char* condi(Robo unidade){
         }else{
             return "operacional";
         }
-    }
 }
 
 int exib(Robo unidade, char status[40]){
