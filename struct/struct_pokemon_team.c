@@ -50,13 +50,13 @@ int main(){
 
     while(con<6){
         con+=leitura(&time[con], &fogo);
-        if(time[con].CP>CP){
-            CP=time[con].CP;
-            marcador1=con;
+        if(time[con-1].CP>CP){
+            CP=time[con-1].CP;
+            marcador1=con-1;
         }
-        if(time[con].nivel>nivel){
-            nivel=time[con].nivel;
-            marcador2=con;
+        if(time[con-1].nivel>nivel){
+            nivel=time[con-1].nivel;
+            marcador2=con-1;
         }
     }
 
