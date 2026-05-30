@@ -11,7 +11,7 @@ typedef struct{
 char* condi(Robo unidade){
         if(unidade.bateria<20){
             return "critico";
-        }else if(unidade.bateria>=20 && unidade.bateria<50){
+        }else if(unidade.bateria>=20 && unidade.bateria<=50){
             return "atencao";
         }else{
             return "operacional";
