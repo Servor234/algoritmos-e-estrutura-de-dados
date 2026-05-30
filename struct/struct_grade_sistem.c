@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-typedef struct alunos{
+typedef struct{
     char nome[100];
     int mat;
     int nota;
