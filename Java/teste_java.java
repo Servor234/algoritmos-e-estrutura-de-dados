@@ -17,10 +17,6 @@ public class teste_java {
 
         System.out.printf("Resultado: %d\n", soma);
 
-        System.out.println("Hello, World!, carros voam as tres da manha");
-        System.out.println("bom dia");
-
         input.close();
-
     }
 }
