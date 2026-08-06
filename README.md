@@ -11,14 +11,14 @@ Past:
 - Files
 - String
 - Structs
-
-curently:
-- POO
+- C
 - C++
 
+Curently:
+- Java
+
 Main tools used:
-- Codeblocks
 - Github
-- Tinkercad
+- Visual Code Studio
 
 By: Renato Teixeira Miranda Guimarães.
