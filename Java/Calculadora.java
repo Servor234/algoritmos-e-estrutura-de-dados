@@ -20,7 +20,7 @@ public class Calculadora{
         if(op==1){
             som=a+b;
 
-            System.out.printf("Sua soma: %.2\n", som);
+            System.out.printf("Sua soma: %.2f\n", som);
         }else if(op==2){
             if(a>b){
                 som=a-b;
