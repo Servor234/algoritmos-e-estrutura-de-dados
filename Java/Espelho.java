@@ -20,7 +20,8 @@ public class Espelho{
         }
 
         for(int i=quant-1;i>=0;i--){
-            System.out.printf("%s ", c[i]);
+            for(int j=0;j<)
+            System.out.printf("%s ", c[i].charAt(j));
         }
 
         novo.close();
