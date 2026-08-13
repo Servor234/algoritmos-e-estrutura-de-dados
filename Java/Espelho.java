@@ -5,24 +5,29 @@ public class Espelho{
         Scanner novo= new Scanner (System.in);
         int a,b, mark=0, quant;
 
+        while(novo.hasNextInt()){
         a=novo.nextInt();
 
         b=novo.nextInt();
-
         quant=b-a+1;
+
 
         String[] c= new String[quant];
 
         for(int i=a;i<=b;i++){
             c[mark]=String.valueOf(i);
-            System.out.printf("%s ", c[mark]);
+            System.out.printf("%s", c[mark]);
             mark++;
         }
 
         for(int i=quant-1;i>=0;i--){
-            System.out.printf("%s ", c[i]);
+            for(int j=c[i].length()-1;j>=0;j--){
+                System.out.printf("%s", c[i].charAt(j));
+            }
         }
-
-        novo.close();
+        System.out.printf("\n");
+        mark=0;
+    }
+    novo.close();
     }
 }
