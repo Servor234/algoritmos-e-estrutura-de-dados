@@ -10,10 +10,16 @@ public class cifra{
 	cripto=lei.nextLine();
 
 	for(int i=0;i<cripto.length();i++){
-		System.out.printf("%c", cripto.charAt(i)+chave);
+		if(cripto.charAt(i)=='z' || cripto.charAt(i)=='Z'){
+		System.out.printf("%c", cripto.charAt(i)-26+chave);
+		}else{
+			System.out.printf("%c", cripto.charAt(i)+chave);
+		}
 	}
 
 	System.out.printf("\n");
+
+	lei.close();
 
 	}
 }
