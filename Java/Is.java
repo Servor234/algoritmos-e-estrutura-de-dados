@@ -71,8 +71,6 @@ public class Is{
 
         System.out.printf("\n");
 
-        System.out.println("Carlinhos maia");
-
         lei.close();
     }
 }
