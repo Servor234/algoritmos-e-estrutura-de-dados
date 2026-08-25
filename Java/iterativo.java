@@ -8,7 +8,7 @@ public class iterativo{
 
         while(Arq.hasNext()==true){
             str=Arq.nextLine();
-            if(!str.equals("FIM")){
+            //if()){
                 for(int i=0;i<str.length();i++){
                     if(str.charAt(i)>='A' && str.charAt(i)<='Z'){
                         ma++;
