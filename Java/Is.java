@@ -1,10 +1,10 @@
 import java.util.Scanner;
 
 public class Is{
-    public static Boolean vowls(String a){
+    public static Boolean vowls(String a){//metodo para analisar a string e retornar se é ou não uma frase de vogais
         for(int i=0;i<a.length();i++){
             if(a.charAt(i)!='a' ||a.charAt(i)!='e'||a.charAt(i)!='i'||a.charAt(i)!='o'||a.charAt(i)!='u'){
-                return false;
+                return false;//caso tenha algo diferente de voga
             }
         }
         return true;

@@ -16,11 +16,11 @@ public class iterativo{
                 }
                 System.out.printf("%d\n", ma);
                 ma=0;
-            }else{
+            //}else{
                 break;
-            }
+          //  }
         }
 
-        Arq.close();
+        //Arq.close();
     }
 }
