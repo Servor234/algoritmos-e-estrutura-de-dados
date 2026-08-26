@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class Is{
-    public static Boolean vowls(String a){//metodo para analisar a string e retornar se é ou não uma frase de vogais
+    public static boolean vowls(String a){//metodo para analisar a string e retornar se é ou não uma frase de vogais
         for(int i=0;i<a.length();i++){
             if(a.charAt(i)!='a' && a.charAt(i)!='e' && a.charAt(i)!='i' && a.charAt(i)!='o' && a.charAt(i)!='u'){
                 return false;//caso tenha algo diferente de vogal ele para e deixa como falso
@@ -9,25 +9,38 @@ public class Is{
         }
         return true;//caso não tenha algo diferente ele retorna verdadeiro para o caso de frases vogais
     } 
-    public static Boolean Nvowls(String a){//metodo para analisar a string e retornar se é ou não uma frase de consoantes
+    public static boolean Nvowls(String a){//metodo para analisar a string e retornar se é ou não uma frase de consoantes
         for(int i=0;i<a.length();i++){
-            if((a.charAt(i)=='a' ||a.charAt(i)=='e'||a.charAt(i)=='i'||a.charAt(i)=='o'||a.charAt(i)=='u') || (a.charAt(i)>90)){
+            if((a.charAt(i)=='a' ||a.charAt(i)=='e'||a.charAt(i)=='i'||a.charAt(i)=='o'||a.charAt(i)=='u') || (a.charAt(i)>'z' || a.charAt(i)<'a')){
                 return false;//caso tenha uma vogal ele para e deixa como falso
             }
         }
         return true;//caso não tenha vogal ele retorna verdadeiro para frase de consoantes
     } 
 
-    public static Boolean intege(String a){//metodo que verifica se é um numero inteiro
-        for(int i=0;i<a.length();i++){
-            if(a.charAt(i)=='.' || a.charAt(i)==',' || (a.charAt(i)<48 || a.charAt(i)>57)){//caso tenha ponto ou virgula, ou não seja um numero ele retorna falso
-                return false;
+    public static boolean rei(String a){//metodo que verifica se é um numero inteiro
+        int conta=0;
+	for(int i=0;i<a.length();i++){
+	char c=a.charAt(i);
+            if(c=='.' || c==','){
+	    	conta++;
+
+		if(conta>1){
+		return false;
+		}
+
+	    } 
+			    
+		if((c<48 || c>57)){//caso tenha ponto ou virgula, ou não seja um numero ele retorna falso
+               	return false;
             }
+
+	    return true;
         }
         return true;//caso um numero inteiro retorna verdadeiro
     }
 
-    public static Boolean rei(String a){//metodo que verifica se é um numero real
+    public static boolean intege(String a){//metodo que verifica se é um numero real
         int conta=0;
         for(int i=0;i<a.length();i++){
             if((a.charAt(i)<48 || a.charAt(i)>57) || (a.charAt(i) !=46 && a.charAt(i)!=44) && conta<=2){//verifica se não é um numero, se possui algo diferente de ponto ou virgula e se eles repetem alguma vez
@@ -43,7 +56,7 @@ public class Is{
     }
 
     static boolean FIM(String frase, int n){//metodo para verificar se a frase é fim
-    	if(n>=3 && frase.charAt(0)=='F' && frase.charAt(1)=='I' && frase.charAt(2)=='M'){
+    	if(n==3 && frase.charAt(0)=='F' && frase.charAt(1)=='I' && frase.charAt(2)=='M'){
     		return false;//retorna false caso seja fim
 	}
 
