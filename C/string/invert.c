@@ -9,23 +9,34 @@ int strleng(char a[]){
     return cont;   
 }
 
+void invert(char a[], char b[], int n ){
+	for(int i=0;i<n;i++){
+	b[i]=a[n-1-i];
+	}
+
+	b[n]='\0';
+
+}
+
 int main(){
-    char frase[200];
+    char frase[200], frase1[201];
     int n=0;
     
     //leitura da frase analisada
-    scanf("%s", frase);
+    while(scanf("%s", frase)!=EOF){
     
     //leitura do tamanho da frase para eficiencia
     n=strleng(frase);
 
     //modulo de exibição da frase em ordem oposta
-    for(int i=0;i<n;i++){
-        printf("%c", frase[n-i-1]);
-    }
+    invert(frase, frase1,n);
+
+    printf("%s", frase1);
 
     //realiza o print para separar as linhas apos o for
     printf("\n");
+
+    }
 
     return 0;
 }
