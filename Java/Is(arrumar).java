@@ -42,12 +42,24 @@ public class Is{
         return true;//caso seja real, retorna verdade
     }
 
+    static boolean FIM(String frase, int n){//metodo para verificar se a frase é fim
+    	if(n>=3 && frase.charAt(0)=='F' && frase.charAt(1)=='I' && frase.charAt(2)=='M'){
+    		return false;//retorna false caso seja fim
+	}
+
+	return true;//retorna true para frases com 2 caracteres e que não sejam fim
+    }
+
     public static void main(String[] args){
         Scanner lei = new Scanner(System.in);
         String frase;
         //declara o novo leitor para o sistema
-        frase = lei.nextLine();
+        
+	while(lei.hasNextLine()!=false){//realiza a leitura ate o fim do arquivo
+	frase = lei.nextLine();
         //le a nova frase
+	
+	if(FIM(frase, frase.length())!=false){//caso a frase seja fim, para
         if(vowls(frase)==true){//caso retorne a frase como verdadeiro Sim, caso contrario retorna não
             System.out.printf("SIM ");
         }else{
@@ -76,7 +88,8 @@ public class Is{
         }
 
         System.out.printf("\n");//separa as linhas de leitura
-
+	}
+	}
         lei.close();//fecha o leitor 
     }
 }
