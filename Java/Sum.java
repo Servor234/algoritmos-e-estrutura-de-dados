@@ -14,11 +14,13 @@ public class Sum{
         int n1, soma=0;
         Scanner lei = new Scanner(System.in);
 
+       while((lei.hasNextInt())!=false){//verifica se existe uma proxima linha a ser lida
         n1=lei.nextInt();
-        //realiza a leitura para o inteiro a ser somado
+	//realiza a leitura para o inteiro a ser somado
         soma=recu(n1);
         //realiza a chamada recursiva e assoscia a variavel de soma
-        System.out.printf("%d", soma);
+        System.out.printf("%d\n", soma);
+       }
         //fecha o leitor
         lei.close();
     }
