@@ -1,14 +1,15 @@
 import java.util.Scanner;
 
 public class Inver{
-    static void recu(int n, String frase){
-        if(n==0){
-		System.out.printf( "%c\n", frase.charAt(n));
+    static void recu(int n, String frase, String a, int i){
+        if(i==n){
+            a+=(char)(frase.charAt(i)+3);
+		System.out.printf( "%s\n", a);
             //imprime a primeira letra da frase no final
         }else{
-            System.out.printf( "%c", frase.charAt(n));//imprime as letras de tras para frente recursivamente
+            a+=(char)(frase.charAt(i)+3);//imprime as letras de tras para frente recursivamente
 
-            recu(n-1,frase);//realiza a chamada recursiva para ir para o indice anterior
+            recu(n,frase, a, i+1);//realiza a chamada recursiva para ir para o indice anterior
         }
     }
 
@@ -22,7 +23,7 @@ public class Inver{
 
     public static void main(String[] args){
         Scanner lei = new Scanner(System.in);
-        String frase;
+        String frase, frase2="";
         int n1;
 	
 	while(lei.hasNextLine()!=false){
@@ -34,7 +35,7 @@ public class Inver{
 		
 	if(FIM(frase, n1)==true){//caso a frase seja fim, não faz a inversão
         //chama a função recursiva
-        recu(n1-1, frase);
+        recu(n1-1, frase, frase2,0);
 	}
 	}
         //fecha o leitor

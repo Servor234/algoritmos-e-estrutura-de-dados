@@ -10,26 +10,35 @@ int strleng(char a[]){
     return n;
 }
 
-void cifra(char a[], int n, int i){
+void cifra(char a[], char b[], int n, int i){
     if(i==n-1){
-        printf("%c\n", a[i]+3);//mosta a primeira letra com o incremento da chave
+        b[i]=(char)(a[i]+3);//guarda a ultima letra e exibe
+        printf("%s\n", b);//mosta a frase em uma string já cifrada
     }else{
-        printf("%c", a[i]+3);//mostra as letras na tela de forma recursivamente
-        return cifra(a,n, i+1);//incrementa o indice e continua chamando recursivamente
+        b[i]=(char)(a[i]+3);//guarda a frase recursivamente com a alteração
+        return cifra(a, b,n, i+1);//incrementa o indice e continua chamando recursivamente
+    }
+}
+
+int FIM(char frase[], int n){//analisa se a frase é fim e retorna sim e não de acordo
+    if(n==3 && frase[0]=='F' && frase[1]=='I' && frase[2]=='M'){
+        return 1;
+    }else{
+        return 0;
     }
 }
 
 int main(){
-    char frase[100];
+    char frase[100], frase2[100];
     int n1=0;
-    int i=0;
-    //declaração da variavel
 
-    scanf("%s", frase);
+    while(scanf("%s", frase)!=EOF){
     //leitura das frases
     n1=strleng(frase);
     //verificação do tamanho da frase guardada em n1
 
-    cifra(frase,n1,i);//uso de uma frase, do tamanho e de um contador em i para o limite da operação
-
+    if(FIM(frase, n1)==0){//para as chamadas se a frase for fim
+    cifra(frase, frase2,n1,0);//uso de uma frase, do tamanho e de um contador em i para o limite da operação
+    }
+}
 }

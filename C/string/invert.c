@@ -15,7 +15,18 @@ void invert(char a[], char b[], int n ){
 	}
 
 	b[n]='\0';
+    printf("%s", b);//exibe a frase
 
+    //realiza o print para separar as linhas apos o for
+    printf("\n");
+}
+
+int FIM(char a[], int n){//checa se a frase é fim e retorna sim ou não caso seja
+    if(n==3 && a[0]=='F' && a[1]=='I' && a[2]=='M'){
+        return 1;
+    }else{
+        return 0;
+    }
 }
 
 int main(){
@@ -28,14 +39,10 @@ int main(){
     //leitura do tamanho da frase para eficiencia
     n=strleng(frase);
 
-    //modulo de exibição da frase em ordem oposta
+    if(FIM(frase,n)==0){//para caso a frase seja fim
+    //modulo que chama o metodo de inversão da frase
     invert(frase, frase1,n);
-
-    printf("%s", frase1);
-
-    //realiza o print para separar as linhas apos o for
-    printf("\n");
-
+    }
     }
 
     return 0;

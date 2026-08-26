@@ -21,6 +21,6 @@ public class iterativo{
           //  }
         }
 
-        //Arq.close();
+        Arq.close();
     }
 }
