@@ -1,26 +1,38 @@
 import java.util.Scanner;
 
 public class cifra{
+	
+	static String cifra(String frase, int n){
+	String a="";
+
+		for(int i=0;i<n;i++){
+			a+=(char)(frase.charAt(i)+3);
+		}
+
+		return a;
+	}
+
 	public static void main(String[] args){
 	Scanner lei = new Scanner(System.in);
 	//declaração do scanner para leitura de inputs
 	
-	String cripto;
-	int chave=3;
-
+	String cripto,frase2;
+	int chave=0;
+	
+	while(lei.hasNextLine()!=false){
 	cripto=lei.nextLine();
-		//leitura da frase a ser criptografada
+	//leitura da frase a ser criptografada
 
-	for(int i=0;i<cripto.length();i++){//loop para poder percorrer a frase letra por letra
-		if((cripto.charAt(i)>=88 && cripto.charAt(i)<= 90)|| (cripto.charAt(i)>=120 && cripto.charAt(i)<=122)){//caso a letra seja z é preciso voltar a partir da letra a
-		System.out.printf("%c", cripto.charAt(i)-26+chave);//mostra a partir da letra a
-		}else{
-			System.out.printf("%c", cripto.charAt(i)+chave);//faz a impressão normalmente
-		}
-	}
+	chave=cripto.length();
+
+	frase2=cifra(cripto,chave);
+
+	//loop para poder percorrer a frase letra por letra
+		System.out.printf("%s", frase2);//faz a impressão normalmente
+
 
 	System.out.printf("\n");//joga o \n para poder quebrar a linha e manter o padrao de entradas
-
+	}
 	lei.close();
 
 	}
