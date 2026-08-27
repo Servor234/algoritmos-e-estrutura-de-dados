@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Inver{
     static void recu(int n, String frase, String a, int i){
-        if(i==n){
+        if(i==n-1){
             a+=(char)(frase.charAt(i)+3);
 		System.out.printf( "%s\n", a);
             //imprime a primeira letra da frase no final
@@ -35,7 +35,7 @@ public class Inver{
 		
 	if(FIM(frase, n1)==true){//caso a frase seja fim, não faz a inversão
         //chama a função recursiva
-        recu(n1-1, frase, frase2,0);
+        recu(n1, frase, frase2,0);
 	}
 	}
         //fecha o leitor
