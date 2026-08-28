@@ -13,7 +13,7 @@ public class cifra{
 	}
 
 	static boolean FIM(String frase1, int n){//checa se a frase é fim e retorna true ou false caso seja
-		if(n==3 && frase1.charAt(0)=='F' && frase1.charAt(1)=='I' && frase1.charAt(0)=='M'){
+		if(n==3 && frase1.charAt(0)=='F' && frase1.charAt(1)=='I' && frase1.charAt(2)=='M'){
 			return false;
 		}else{
 			return true;

@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Is{
     public static boolean vogais(String a){//metodo para analisar a string e retornar se é ou não uma frase de vogais
         for(int i=0;i<a.length();i++){
-            if(a.charAt(i)!='a' && a.charAt(i)!='e' && a.charAt(i)!='i' && a.charAt(i)!='o' && a.charAt(i)!='u'){
+            if(a.charAt(i)!='a' && a.charAt(i)!='e' && a.charAt(i)!='i' && a.charAt(i)!='o' && a.charAt(i)!='u' && a.charAt(i)!='A' && a.charAt(i)!='E' && a.charAt(i)!='I' && a.charAt(i)!='O' && a.charAt(i)!='U'){
                 return false;//caso tenha algo diferente de vogal ele para e deixa como falso
             }
         }
@@ -11,7 +11,7 @@ public class Is{
     } 
     public static boolean Consoantes(String a){//metodo para analisar a string e retornar se é ou não uma frase de consoantes
         for(int i=0;i<a.length();i++){
-            if((a.charAt(i)=='a' ||a.charAt(i)=='e'||a.charAt(i)=='i'||a.charAt(i)=='o'||a.charAt(i)=='u') || (a.charAt(i)>'z' || a.charAt(i)<'a')){
+            if((a.charAt(i)=='a' ||a.charAt(i)=='e'||a.charAt(i)=='i'||a.charAt(i)=='o'||a.charAt(i)=='u') || (a.charAt(i)>'z' || a.charAt(i)<'a') || a.charAt(i)=='A' || a.charAt(i)=='E' || a.charAt(i)=='I' || a.charAt(i)=='O' || a.charAt(i)=='U' || (a.charAt(i)<'A' || a.charAt(i)>'Z')){
                 return false;//caso tenha uma vogal ele para e deixa como falso
             }
         }
@@ -19,9 +19,13 @@ public class Is{
     } 
 
     public static boolean real(String a){//metodo que verifica se é um numero real
-        int conta=0;
+        int conta=0, numero=0;
 	    for(int i=0;i<a.length();i++){
 	        char c=a.charAt(i);
+            if(c>='0' && c<='9'){
+                numero++;//analisa se existe ao menos 1 numero
+            }
+
             if(c=='.' || c==','){
 	    	    conta++;
 
@@ -34,7 +38,11 @@ public class Is{
             }
 
         }
+        if(numero>=1){
         return true;//caso um numero real retorna verdadeiro
+        }else{
+            return false;//caso seja feito somente de pontos, retorna falso
+        }
     }
 
     public static boolean inteiro(String a){//metodo que verifica se é um numero inteiro
@@ -79,9 +87,9 @@ public class Is{
 
         
         if(real(frase)==true){//retorna sim caso numero real e não caso o contrario
-            System.out.printf("SIM ");
+            System.out.printf("SIM");
         }else{
-            System.out.printf("NAO ");
+            System.out.printf("NAO");
         }
 
         System.out.printf("\n");//separa as linhas de leitura

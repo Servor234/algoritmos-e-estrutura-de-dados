@@ -3,13 +3,13 @@ import java.util.Scanner;
 public class Inver{
     static void recu(int n, String frase, String a, int i){
         if(i==n-1){
-            a+=(char)(frase.charAt(i)+3);
+            a+=(char)(frase.charAt(n-1-i));//concatena a ultima letra
 		System.out.printf( "%s\n", a);
-            //imprime a primeira letra da frase no final
+            //imprime a frase final invertida
         }else{
-            a+=(char)(frase.charAt(i)+3);//imprime as letras de tras para frente recursivamente
+            a+=(char)(frase.charAt(n-i-1));//concatena as letras de tras para frente
 
-            recu(n,frase, a, i+1);//realiza a chamada recursiva para ir para o indice anterior
+            recu(n,frase, a, i+1);//realiza a chamada recursiva para ir para o indice de n anterior
         }
     }
 
