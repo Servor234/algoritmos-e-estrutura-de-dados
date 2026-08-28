@@ -32,10 +32,10 @@ void recu (char frase[], int n, int cond1, int cond2, int cond3, int cond4){
             }
 
             return recu(frase, n-1,1,1,cond3,cond4);//torna as condições de frases falsa instantaneamente
-        }else if(n!=-1 && ((frase[n]>='a' && frase[n]<='z') || (frase[n]>='A' && frase[n]<='Z') && (frase[n]!='a' && frase[n]!='e' && frase[n]!='i' && frase[n]!='o' && frase[n]!='u') && (frase[n]!='A' && frase[n]!='E' && frase[n]!='I' && frase[n]!='O' && frase[n]!='U'))){//entra caso seja uma letra diferente de vogal
+        }else if(n!=-1 && (((frase[n]>='a' && frase[n]<='z') || (frase[n]>='A' && frase[n]<='Z')) && (frase[n]!='a' && frase[n]!='e' && frase[n]!='i' && frase[n]!='o' && frase[n]!='u') && (frase[n]!='A' && frase[n]!='E' && frase[n]!='I' && frase[n]!='O' && frase[n]!='U'))){//entra caso seja uma letra diferente de vogal
             return recu(frase, n-1, 1, cond2, 1,2);//torna as condições falsas para numeros e para vogais
         
-        }else if(n!=-1 && (frase[n]=='a' || frase[n]=='e' || frase[n]=='i' || frase[n]=='o' || frase[n]=='u') || (frase[n]=='A' || frase[n]=='E' || frase[n]=='I' || frase[n]=='O' || frase[n]=='U')){//entra caso tenha uma vogal, por não se tratar de uma consoante
+        }else if(n!=-1 && (frase[n]=='a' || frase[n]=='e' || frase[n]=='i' || frase[n]=='o' || frase[n]=='u' || frase[n]=='A' || frase[n]=='E' || frase[n]=='I' || frase[n]=='O' || frase[n]=='U')){//entra caso tenha uma vogal, por não se tratar de uma consoante
             return recu(frase,n-1,cond1,1,1,2);//torna as condições falsas para numeros e para consoantes
         
         }else if(n!=-1 && ((frase[n]<'a' || frase[n]>'z') && (frase[n]<'A' || frase[n]>'Z'))){//faz com que caso não tenha letra, torne as frases falsas
@@ -49,7 +49,7 @@ void recu (char frase[], int n, int cond1, int cond2, int cond3, int cond4){
 //função que realiza a função do strlen
 int strleng(char a[]){
     int n=0;
-    while(a[n]!='\0')
+    while(a[n]!='\0' && a[n]!='\n')
     n++;
 
     return n;
@@ -58,7 +58,7 @@ int strleng(char a[]){
 int FIM(char frase[], int n){
     if(n==3 && frase[0]=='F' && frase[1]=='I' && frase[2] == 'M'){
         return 1;
-    }else if(n==1 && frase[0]==' '){
+    }else if(n==0){
         return 1;
     }else{
         return 0;
@@ -73,7 +73,7 @@ int main(){
     n1=strleng(frase);
 
 //chamada recursiva do codigo
-    if(FIM(frase,n1-1)==0){
+    if(FIM(frase,n1)==0){
     recu(frase,n1-1,0,0,0,0);
     }else{
         cond=1;

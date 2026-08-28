@@ -10,11 +10,11 @@
     }
 
     void invert(char a[], char b[], int n ){
-        for(int i=0;i<n;i++){
+        for(int i=0;i<n;i++){//guarda as letras de tras para frente em uma nova string
             b[i]=a[n-1-i];
         }
 
-        b[n]='\0';
+        b[n]='\0';//deixa um \0 no final para poder marcar o fim da string
         printf("%s\n", b);//exibe a frase
     }
 
