@@ -1,34 +1,95 @@
 import java.util.*;
 
-public class teste{
-	public static class joia{
-		private int a;
-		private int b;
+public class carro{
+	public class data{
+		private int dia;
+		private int mes;
+		private int ano;
 
-		public joia(int a1, int a2){
-			this.a=a1;
-			this.b=a2;
+		public data(){
+			dia=0;
+			mes=0;
+			ano=0;
 		}
 
-		public int geta(){
-			return a;
+		public void setdia(int a){
+			dia=a;
 		}
 
-		public int getb(){
-			return b;
+		public void setmes(int a){
+			mes=a;
 		}
 
-		public String nome(){
-			String g= geta() + "/" + getb();
-			return g;
+		public void setano(int a){
+			ano=a;
+		}
+
+		public int getdia(){
+			return dia;
+		}
+
+		public int getmes(){
+			return mes;
+		}
+
+		public int getano(){
+			return ano;
+		}
+
+		public String format(){
+			String a="";	
+			a+=getdia();
+			a+='/';
+			a+=getmes();
+			a+='/';
+			a+=getano();
+			return a; 
 		}
 	}
+
+	public class veiculo{
+		private int id;
+		private String marca;
+		private String modelo;
+		private int ano;
+		private String cate;
+		private String[] combustivel;
+		private int cilidro;
+		private double cilidrada;
+		private String transmi;
+		private String tracao;
+		private double consumoCid;
+		private double consumoEst;
+		private double co2;
+		private boolean turbo;
+		private data dataregis;
+
+		public veiculo(){
+			marca=" ";
+			modelo=" ";
+			ano=0;
+			cate=" ";
+			combustivel= new String[1];
+			cilidro=0;
+			cilidrada=0;
+			transmi=" ";
+			tracao=" ";
+			consumoCid=0;
+			consumoEst=0;
+			co2=0;
+			turbo=false;
+		}
+
+		public void format(){
+			String a="";
+		}
+
+	}
+
+	public class leitorCsv{}
 
 	public static void main(String[] args){
 		Scanner lei = new Scanner(System.in);
 
-		joia a= new joia(1,3);
-
-		System.out.printf("%s\n", a.nome());
 	}
 }
