@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class teste{
+public class Modelagem_java{
 	public static class joia{
 		private int a;
 		private int b;
@@ -30,5 +30,7 @@ public class teste{
 		joia a= new joia(1,3);
 
 		System.out.printf("%s\n", a.nome());
+		
+		lei.close();
 	}
 }
