@@ -1,17 +1,10 @@
 import java.util.*;
 
-<<<<<<< HEAD
 public class Modelagem_java{
-	public static class joia{
-		private int a;
-		private int b;
-=======
-public class carro{
 	public class data{
 		private int dia;
 		private int mes;
 		private int ano;
->>>>>>> 1a96f200d78a0ca8662891829b78fca77944f3fd
 
 		public data(){
 			dia=0;
@@ -98,13 +91,5 @@ public class carro{
 	public static void main(String[] args){
 		Scanner lei = new Scanner(System.in);
 
-<<<<<<< HEAD
-		joia a= new joia(1,3);
-
-		System.out.printf("%s\n", a.nome());
-		
-		lei.close();
-=======
->>>>>>> 1a96f200d78a0ca8662891829b78fca77944f3fd
 	}
 }
