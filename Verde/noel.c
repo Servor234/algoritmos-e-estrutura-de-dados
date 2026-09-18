@@ -10,36 +10,32 @@ int strleng(char a[]){
 	return caracter;
 }
 
-int strcomp(char *p, char *c, int d){
-	for(int i=0;i<d;i++){
+int strcomp(char *p, char *c){
+	int i=0;
+	while(p[i]!='\0' && c[i]!='\0'){
 		if(p[i]>c[i]){
-			return 1;
+		return 1;
+		}else if(p[i]<c[i]){
+			return 0;
 		}
+		i++;
 	}
+
+	if(p[i]!='\0')
+	return 1;
 
 	return 0;
 }
 
 void buble(char **a, int casos){
-	for(int i=0;i<casos;i++){
-		for(int j=0;j+1<casos;j++){
-			int carlos=0;
+	for(int i=0;i+1<casos;i++){
+		for(int j=0;j+1<casos-i;j++){
             
-			if(strleng(a[j])>strleng(a[j+1])){
-				carlos = strcomp(a[j],a[j+1], strleng(a[j]));
-			}else{
-				carlos = strcomp(a[j],a[j+1], strleng(a[j+1]));
-			}
-
-            if(carlos==1){
+			if(strcomp(a[j],a[j+1])==1){
                 char *p = a[j];
 				a[j]=a[j+1];
 				a[j+1]=p;
             }
-		}
-		printf("leva numero %d:\n", i);
-			for(int k=0;k<casos;k++){
-				printf("%s\n", a[k]);
 		}
 	}
 }
@@ -73,7 +69,7 @@ int main(){
 		printf("%s\n", frase[i]);
 	}
 
-	printf("Se comportaram:%d | Nao se comportaram: %d\n", bom,ruim);
+	printf("Se comportaram: %d | Nao se comportaram: %d\n", bom,ruim);
 
 	return 0;
 }
