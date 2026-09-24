@@ -17,18 +17,18 @@ typedef struct pilha{
     Celula *topo;
 }pilha;
 
-void push(pilha a,int x){
+void push(pilha *a,int x){
     Celula *tmp = novaCelula(x);
-    tmp->prox=a.topo;
-    a.topo=tmp;
+    tmp->prox=a->topo;
+    a->topo=tmp;
     tmp=NULL;
     free(tmp);
 }
 
-int pop(pilha a){
-    int elemento=a.topo->elemento;
-    Celula *tmp=a.topo;
-    a.topo=a.topo->prox;
+int pop(pilha *a){
+    int elemento=a->topo->elemento;
+    Celula *tmp=a->topo;
+    a->topo=a->topo->prox;
     tmp->prox=NULL;
     free(tmp);
     tmp=NULL;

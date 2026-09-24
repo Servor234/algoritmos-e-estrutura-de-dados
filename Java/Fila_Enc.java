@@ -143,7 +143,6 @@ public class Fila_Enc {
             Celula j=primeiro;
             Celula last =null;
             for(Celula k=primeiro.prox;k.prox!=last;k=k.prox){
-                System.out.print(k.el+ "\n");
                 j=k;
                 for(;j.prox!=last;j=j.prox);
                 last=j;

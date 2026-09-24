@@ -45,6 +45,45 @@ public class Modelagem_java{
 			a+=getano();
 			return a; 
 		}
+
+		data parseData(String s){
+			String[] frases = s.split("-");
+			data d1 = new data();
+			int soma=0;
+			for(int i=0;i<frases[0].length();i++){
+				soma+=frases[0].charAt(i)-'0';
+
+				if(i+1<frases[0].length()){
+					soma*=10;
+				}
+			}
+
+			d1.setano(soma);
+
+			soma=0;
+			for(int i=0;i<frases[1].length();i++){
+				soma+=frases[1].charAt(i)-'0';
+
+				if(i+1<frases[1].length()){
+					soma*=10;
+				}
+			}
+
+			d1.setmes(soma);
+
+			soma=0;
+			for(int i=0;i<frases[2].length();i++){
+				soma+=frases[2].charAt(i)-'0';
+
+				if(i+1<frases[2].length()){
+					soma*=10;
+				}
+			}
+
+			d1.setdia(soma);
+
+			return d1;
+		}
 	}
 
 	public static class veiculo{
@@ -69,7 +108,7 @@ public class Modelagem_java{
 			modelo=" ";
 			ano=0;
 			cate=" ";
-			combustivel= new String[1];
+			combustivel= new String[2];
 			cilidro=0;
 			cilidrada=0;
 			transmi=" ";
@@ -230,6 +269,141 @@ public class Modelagem_java{
 			a+="]";
 			return a;
 		}
+
+		public veiculo parseveiculo(String s){
+			veiculo v1 = new veiculo();
+
+			String[] t= s.split(",");
+
+			int soma=0;
+
+			for(int i=0;i<5;i++){
+				soma+=t[0].charAt(i)-'0';
+				if(i+1!=5){
+					soma*=10;
+				}
+			}
+
+			v1.setid(soma);
+
+			v1.setmarca(t[1]);
+			v1.setmodelo(t[2]);
+
+			soma=0;
+			for(int i=0;i<4;i++){
+				soma+=t[3].charAt(i)-'0';
+				if(i+1!=4){
+					soma*=10;
+				}
+			}
+			v1.setano(soma);
+			v1.setcate(t[4]);
+
+			boolean tent=false;
+			for(int i=0;i<t[5].length();i++){
+				if(t[5].charAt(i)==';'){
+					tent=true;
+					i=t[5].length();
+				}
+			}
+
+			if(tent==true){
+				String[] j = t[5].split(";");
+				for(int i=0;i<2;i++){
+					v1.setcombustivel(j[i],i);
+				}
+			}else{
+				v1.setcombustivel(t[5],0);
+			}
+
+			soma=0;
+			for(int i=0;i<t[6].length();i++){
+				soma+=t[6].charAt(i)-'0';
+				if(i+1!=t[6].length()){
+					soma*=10;
+				}
+			}
+
+			v1.setcilidro(soma);
+
+			double soma1=0;
+			for(int i=0;i<t[7].length();i++){
+				if(t[7].charAt(i)=='.'){
+					i++;
+				}
+
+				soma1+=t[7].charAt(i)-'0';
+				if(i+1<t[7].length()){
+					soma1*=10;
+				}
+			}
+
+			v1.setcilidrada(soma1/100);
+
+			v1.settransmi(t[8]);
+			v1.settracao(t[9]);
+			
+			soma1=0;
+
+			for(int i=0;i<t[10].length();i++){
+				if(t[10].charAt(i)=='.'){
+					i++;
+				}
+
+				soma1+=t[10].charAt(i)-'0';
+				if(i+1>=t[10].length()){
+					soma1*=10;
+				}
+			}
+
+			v1.setconsumocid(soma1/100);
+
+			soma1=0;
+
+			for(int i=0;i<t[11].length();i++){
+				if(t[11].charAt(i)=='.'){
+					i++;
+				}
+
+				soma1+=t[11].charAt(i)-'0';
+				if(i+1>=t[11].length()){
+					soma1*=10;
+				}
+			}
+
+			v1.setconsumoest(soma1/100);
+
+			if(t[12].charAt(0)=='0'){
+				v1.setco2(0);
+			}else{
+				soma1=0;
+
+				for(int i=0;i<t[12].length();i++){
+					if(t[12].charAt(i)=='.'){
+						i++;
+					}
+
+					soma1+=t[12].charAt(i)-'0';
+					if(i+1>=t[12].length()){
+						soma1*=10;
+					}
+				}
+				v1.setco2(soma1/10);
+			}
+
+			if(t[13].equals("true")){
+				v1.setturbo(true);
+			}else{
+				v1.setturbo(false);
+			}
+
+			v1.dataregis.parseData(t[14]);
+
+
+
+			return v1;
+		}
+
 
 		public int lin(veiculo[] a, int size, int buscado){
 			for(int i=0;i<size;i++){

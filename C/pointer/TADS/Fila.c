@@ -18,8 +18,21 @@ typedef struct{
     Celula *ultimo;
 }Fila;
 
-int remover(){
-    
+int remover(Fila *a){
+    int elemento=a->primeiro->elemento;
+    Celula* tmp = a->primeiro;
+    a->primeiro=a->primeiro->prox;
+    tmp=NULL;
+    free(tmp);
+    return elemento;
+}
+
+void inserir(Fila *a, int x){
+    Celula* tmp = novaCelula(x);
+    a->ultimo->prox=tmp;
+    a->ultimo=a->ultimo->prox;
+    tmp=NULL;
+    free(tmp);
 }
 
 int main(){
