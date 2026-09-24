@@ -1,7 +1,7 @@
-import java.util.*;
-import java.io.*;
+    import java.util.*;
+    import java.io.*;
 
-public class Modelagem_java{
+public class Modelagem_java2{
 	public static class data{
 		private int dia;
 		private int mes;
@@ -348,7 +348,7 @@ public class Modelagem_java{
 				}
 			}
 
-			v1.setcilidrada(soma1/10);
+			v1.setcilidrada(soma1/100);
 
 			v1.settransmi(t[8]);
 			v1.settracao(t[9]);
@@ -361,7 +361,7 @@ public class Modelagem_java{
 				}
 
 				soma1+=t[10].charAt(i)-'0';
-				if(i+1<t[10].length()){
+				if(i+1>=t[10].length()){
 					soma1*=10;
 				}
 			}
@@ -376,7 +376,7 @@ public class Modelagem_java{
 				}
 
 				soma1+=t[11].charAt(i)-'0';
-				if(i+1<t[11].length()){
+				if(i+1>=t[11].length()){
 					soma1*=10;
 				}
 			}
@@ -394,7 +394,7 @@ public class Modelagem_java{
 					}
 
 					soma1+=t[12].charAt(i)-'0';
-					if(i+1<t[12].length()){
+					if(i+1>=t[12].length()){
 						soma1*=10;
 					}
 				}
@@ -414,62 +414,16 @@ public class Modelagem_java{
 			return v1;
 		}
 
-		public int lin(veiculo[] a, int size, int buscado){
-			for(int i=0;i<size;i++){
-				if(a[i].getid()==buscado){
-					return i;
-				}
-			}
-			return -1;
-		}
-
-		public int maior(String a, String b){
-			int i=0;
-			while(a.charAt(i)!='\0' && b.charAt(i)!='\0'){
-				if(a.charAt(i)>b.charAt(i)){
-					return 1;
-				}
-
-				if(a.charAt(i)<b.charAt(i)){
-					return 0;
-				}
-
-				i++;
-			}
-
-			if(a.charAt(i)!='\0'){
-				return 1;
-			}else{
-				return 0;
-			}
-		}
-
-		public void inser(veiculo[] a,int size){
-			for(int i=1;i<size;i++){
-				String tmp = a[i].getmarca();
-
-				int j=i-1;	
-
-				while(j>=0 && maior(a[j].getmarca(), tmp)==1){
-					a[j+1]=a[j];
-					j--;
-				}
-
-				a[j+1]=a[i];
-			}
-		}
-
 		public void busca(int a, veiculo[] b){
 			for(int i=0;i<500;i++){
 				if(b[i].getid()==a){
-					System.out.print(b[i].format()+"\n");
+					System.out.print(b[i].format()+ "\n");
 					break;
 				}
 			}
 		}
 
 	}
-
 	public static class leitorCsv{
 		public veiculo[] leitordeCsv(String caminhoArquivo){
 				veiculo[] v1 = new veiculo[500];
@@ -498,7 +452,7 @@ public class Modelagem_java{
 	public static void main(String[] args){
 		Scanner lei = new Scanner(System.in);
 		leitorCsv obj = new leitorCsv();
-		veiculo[] arr = obj.leitordeCsv("veiculos.csv");
+		veiculo[] arr = obj.leitordeCsv("/tmp/veiculos.csv");
 		veiculo obj2 = new veiculo();
 		int i=0;
 
@@ -511,4 +465,5 @@ public class Modelagem_java{
 
 		lei.close();
 	}
-}
+}    
+

@@ -228,6 +228,63 @@ Veiculo* Lercsv(char *caminhoArquivo, int *n){
     }
 }
 
+int strgrand(char a[], char b[]){
+    int i=0;
+    while(a[i]!='\0' && b[i]!='\0'){
+        if(a[i]>b[i]){
+            return 1;
+        }else if(a[i]<b[i]){
+            return 0;
+        }
+        i++;
+    }
+    return 2;
+}
+
+void selecao(Veiculo *v1){
+    for(int i=0;i<500;i++){
+        char *modelo = v1[i].modelo;
+        int k=i;
+        for(int j=i+1;j<500;j++){
+            if(strgrand(modelo,v1[j].modelo)==1){
+                modelo=v1[j].modelo;
+                k=j;
+            }
+        }
+
+        Veiculo v2=v1[k];
+        v1[k]=v1[i];
+        v1[i]=v2;
+    }
+}
+
+void counting(Veiculo *v1){
+    int i=0, maior=v1[0].cilindro;
+
+    while(i!=501){
+        if(maior<v1[i].cilindro){
+            maior=v1[i].cilindro;
+        }
+        i++;
+    }
+
+    int *suport = (int*)malloc(sizeof(int)*maior);  
+    for(int i=0;i<500;i++){
+        suport[v1[i].cilindro]++;
+    }
+
+    for(int i=0;i<maior;i++){
+        suport[i+1]+=suport[i];
+    }
+
+    Veiculo *v2=(Veiculo*)malloc(sizeof(Veiculo)*500);
+
+    for(int i=0;i<500;i++){
+        v2[suport[v1[i].cilindro]]=v1[i];
+    }
+
+}
+
 int main(){
     return 0;
 }
