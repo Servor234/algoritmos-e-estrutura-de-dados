@@ -275,195 +275,209 @@ Veiculo* Lercsv(char *caminhoArquivo){
     return v1;//fecha o arquivo e retorna o vetor
 }
 
-Celula* novaCelula(Veiculo x){
-	Celula *tmp=(Celula*)malloc(sizeof(Celula));
-	tmp->arr=x;
-	tmp->prox=NULL;
-	return tmp;
+Celula* novaCelula(Veiculo x){//metodo que cria uma nova celula
+	Celula *tmp=(Celula*)malloc(sizeof(Celula));//cria a nova celula dinamicamente
+	tmp->arr=x;//coloca o veiculo da celula como o veiculo x do parametro
+	tmp->prox=NULL;//deixa prox como null para evitar erros
+	return tmp;//retorna a nova celula
 }
 
-void tiraFim(Lista *v2){
-	Celula *v1=v2->primeiro;
+void tiraFim(Lista *v2){//metodo que remove no final
+    if(v2->primeiro==NULL){//caso a lista esteja vazia não faz nada
+    }else if(v2->primeiro==v2->ult){//caso a lista tenha somente 1 elemento
+        printf("(R)%s %s\n",v2->ult->arr.marca,v2->ult->arr.modelo);//mostra os elementos desejados do veiculo da celula
 
-	for(;v1->prox!=v2->ult;v1=v1->prox);
-	printf("(R)%s %s\n", v2->ult->arr.marca, v2->ult->arr.modelo);
-	v2->ult=v1;
-	v2->ult->prox=NULL;
+        free(v2->ult);//libera a celula
 
-}
-
-void tiraIni(Lista *v2){
-    printf("(R)%s %s\n",
-           v2->primeiro->arr.marca,
-           v2->primeiro->arr.modelo);
-
-    Celula *tmp = v2->primeiro;
-
-    v2->primeiro = v2->primeiro->prox;
-
-    if(v2->primeiro == NULL){
+        v2->primeiro = NULL;//deixa os ponteiros dos limites como nulos
         v2->ult = NULL;
-    }
+    }else{//caso não seja nula e tenha mais de 1 elemento
+        Celula *ant=v2->primeiro;//cria um ponteiro auxiliar na primeira celula 
 
-    free(tmp);
-}
-void tira(int pos, Lista *v2){
-
-    if(v2->primeiro == NULL){
-        printf("Lista vazia!\n");
-        return;
-    }
-
-    if(pos == 0){
-        tiraIni(v2);
-        return;
-    }
-
-    Celula *v1 = v2->primeiro;
-
-    for(int i = 0; i < pos - 1; i++){
-
-        if(v1 == NULL){
-            printf("Posicao invalida!\n");
-            return;
+        while(ant->prox!=v2->ult){//caminha até a posição anterior a ultima celula
+            ant=ant->prox;
         }
 
-        v1 = v1->prox;
+        printf("(R)%s %s\n",v2->ult->arr.marca,v2->ult->arr.modelo);//mostra os elementos desejados do veiculo da celula
+
+        free(v2->ult);//libera a celula
+
+        v2->ult = ant;//passa o ponteiro da ultima celula para sua celula anterior
+        v2->ult->prox = NULL;//deixa que o proximo seja nulo para evitar erros
+    }
+}
+
+void tiraIni(Lista *v2){//metodo que remove no inicio
+    if(v2->primeiro==NULL){//caso a lista esteja vazia não faz nada
+    }else{
+        Celula *tmp=v2->primeiro;//caso tenha elementos cria um ponteiro auxiliar na primeira celula
+
+        printf("(R)%s %s\n",tmp->arr.marca,tmp->arr.modelo);//mostra os elementos da primeira celula
+
+        v2->primeiro=tmp->prox;//faz o ponteiro da primeira celula ir para frente
+
+        if(v2->primeiro==NULL){//caso tenha somente 1 celula atualiza o ultimo para nulo
+            v2->ult=NULL;
+        }
+
+        free(tmp);//libera a antiga primeira celula
+    }
+}
+
+void tira(int pos, Lista *v2){//realiza a remoção da celula em uma posição desejada
+    if(pos==0){//caso a posição seja 0, chama a remoção no inicio
+        tiraIni(v2);
+    }else if(v2->primeiro==NULL){//caso a posição seja diferente de 0 e a lista esteja vazia, não faz nada
+    }else{
+        Celula *ant=v2->primeiro;//cria uma celula auxiliar a partir de primeiro da lista analisada
+
+        for(int i=0;i<pos-1;i++){//caminha pela lista até a posição anterior da desejada
+            ant=ant->prox;
+        }
+
+        if(ant->prox!= NULL){//caso não seja a ultima ira operar
+        Celula *remover=ant->prox;//cria outro ponteiro de apoio na celula que ira remover
+
+        printf("(R)%s %s\n",remover->arr.marca,remover->arr.modelo);//mostra os atributos desejados do veiculo da celula a ser removida
+
+        ant->prox=remover->prox;//faz a celula anteriora ao removido pular a celula que deve ser removida
+
+        if(remover==v2->ult){//caso o removido seja a ultima, atualiza para ultimo ser a celula anteriora
+            v2->ult=ant;
+        }
+
+        free(remover);//libera a memoria da celula removida
+        }
+    }
+}
+
+void inserirFim(Veiculo x, Lista *v2){//realiza a inserção no final da lista
+    Celula *nova=novaCelula(x);//cria a celula desejada
+
+    if(v2->primeiro==NULL){//caso a lista esteja vazia, cria a primeira celula
+        v2->primeiro=nova;
+        v2->ult=nova;
+
+    }else{//caso contrario coloca a celula desejada na ultima posição e move a ultima
+        v2->ult->prox=nova;
+        v2->ult=nova;
+    }
+}
+
+void inserirIni(Veiculo x, Lista *v2){//metodo para inserir no inicio
+    Celula *nova=novaCelula(x);//celula nova desejada
+
+    if(v2->primeiro==NULL){//caso a lista esteja vazia ira inserir a celula como a primeira 
+        v2->primeiro=nova;
+        v2->ult=nova;
+
+    }else{//caso contrario ira realizar a inserção na como anterior ao primeiro e leva primeiro para tras
+        nova->prox=v2->primeiro;
+        v2->primeiro=nova;
+    }
+}
+
+void inserir(int pos, Veiculo x, Lista *v2){//metodo de inserir na posição desejada um veiculo x
+    if(pos==0){//caso a posição seja 0, chama a função para inserir no inicio
+        inserirIni(x, v2);
+    }else if(v2->primeiro==NULL){//caso a lista esteja vazia, não ira operar
+    }else{//caso seja outra posição e tenha elementos ira realizar a inserção
+        Celula *ant=v2->primeiro;//cria um ponteiro auxilidar a partir da primeira celula
+
+        for(int i=0;i<pos-1;i++){//percorre ate a posição anterior ao desejado 
+            ant=ant->prox;
+        }
+
+        if(ant->prox!=NULL){//caso a posição não seja a ultima
+        Celula *nova=novaCelula(x);//cria a celula com o veiculo desejado
+
+        nova->prox=ant->prox;//coloca a celula na posição desejada
+        ant->prox=nova;
+
+        if(nova->prox==NULL){//caso a nova celula seja a ultima, troca o ponteiro da ultima celula para ela
+            v2->ult=nova;
+        }
+        }else{//caso a posição seja a ultima ira inserir no fim
+            inserirFim(x,v2);
+        }
+    }
+}
+
+Lista *convert(Veiculo *a, int *id, int k){//metodo que converte o vetor de ids em um vetor de veiculos no formato de lista encadeada
+    Lista *v2=malloc(sizeof(Lista));//cria a lista encadeada que vai receber os veiculos
+
+    v2->primeiro=NULL;//inicializa a lista encadeada com NULL em primeiro e ultimo
+    v2->ult = NULL;
+
+    for(int j=0;j<k;j++){//começa a busca por cada id do vetor de ids
+        for(int i=0;i<500;i++){
+            if(a[i].id==id[j]){//caso encontre o veiculo com o mesmo id, insere no fim da lista encadeada
+                inserirFim(a[i],v2);
+                i=500;
+            }
+        }
     }
 
-    if(v1 == NULL || v1->prox == NULL){
-        printf("Posicao invalida!\n");
-        return;
+    return v2;
+}
+
+Veiculo convertP(Veiculo *v1, int id){//realiza a busca de um veiculo pelo id e retorna o veiculo encontrado
+    for(int i=0;i<500;i++){
+        if(v1[i].id==id){
+            return v1[i];
+        }
+    }
+}
+
+void busca(Lista *v1){//metodo que mostra toda a lista entregue como parametro 
+    for(Celula *i=v1->primeiro;i!=NULL;i=i->prox){
+        formatVeiculo(i->arr);
+    }
+}
+
+int pegaint(char *frase){//metodo de conversão de string numerica para int
+    int soma = 0;
+    for(int i=0; frase[i]>='0' && frase[i]<='9';i++){//enquanto os digitos da frase numerico estiverem entre 0 e 9, realiza a soma dos digitos em 1 numero que estava na string
+        soma = soma * 10 + (frase[i] - '0');
+    }
+    return soma;//retorna o numero inteiro
+}
+
+void ops(char **operacoes,Lista *v1,int ops2,Veiculo *carro){//metodo que realiza as operações de inserção e remoção de veiculos na lista
+    for(int i=0;i<ops2;i++){//percorre todas as requisições feitas no main
+        char *frase=strtok(operacoes[i], " ");//separa as requisições pelo espaço para pegar a operação e o id e posição
+
+        if(frase[0]=='I' && frase[1]=='I'){//caso seja II, pega o id e chama a função de inserir no inicio
+            frase=strtok(NULL, " ");//puxa a string do id
+            int id=pegaint(frase);//transforma a string em int
+            inserirIni(convertP(carro,id),v1);//realiza a inserção, apos buscar o veiculo pelo id
+
+        }else if(frase[0]=='I' && frase[1]=='F'){//repete a II, mas para o fim
+            frase=strtok(NULL, " ");
+            int id=pegaint(frase);
+            inserirFim(convertP(carro, id), v1);
+
+        }else if(frase[0]=='I' && frase[1]=='*'){//caso seja I* entra nesse bloco
+            frase=strtok(NULL, " ");//primeiro faz a separação da posição
+            int pos=pegaint(frase);//pega a string e converte para int
+            frase = strtok(NULL, " ");
+            int id = pegaint(frase);//repete para o id
+            inserir(pos, convertP(carro, id), v1);//chama a função de inserir na posição, após buscar o veiculo pelo id
+
+        }else if(frase[0]=='R' && frase[1]=='I'){//caso seja RI, chama a função de remover no inicio
+            tiraIni(v1);
+
+        }else if(frase[0]=='R' && frase[1]=='F'){//caso seja RF, chama a função de remover no fim
+            tiraFim(v1);
+
+        }else if(frase[0]=='R' && frase[1]=='*'){//caso seja R*, chama a função de remover na posição
+            frase = strtok(NULL, " ");//pega a string de posição
+            int pos = pegaint(frase);//converte a string para int
+            tira(pos, v1);//chama para remover nesta posição
+        }
     }
 
-    Celula *v = v1->prox;
-
-    printf("(R)%s %s\n",
-           v->arr.marca,
-           v->arr.modelo);
-
-    v1->prox = v->prox;
-
-    if(v == v2->ult){
-        v2->ult = v1;
-    }
-
-    free(v);
-}
-void inserirFim(Veiculo x, Lista *v2){
-	if(v2->primeiro==v2->ult){
-		v2->primeiro=novaCelula(x);
-        v2->ult=v2->primeiro;
-	}else{
-		v2->ult->prox=novaCelula(x);
-		v2->ult=v2->ult->prox;
-	}
-}
-
-void inserirIni(Veiculo x, Lista *v2){
-	if(v2->primeiro==v2->ult){
-		v2->primeiro=novaCelula(x);
-		v2->ult=v2->primeiro;
-	}else{
-		Celula *tmp=novaCelula(x);
-		
-		tmp->prox=v2->primeiro;
-		v2->primeiro=tmp;
-	}
-}
-
-void inserir(int pos, Veiculo x, Lista *v2){
-	if(v2->primeiro==v2->ult){
-		v2->primeiro=novaCelula(x);
-        v2->ult=v2->primeiro;
-	}else{
-		Celula *tmp=v2->primeiro;
-
-		for(int i=0;i<pos;i++, tmp=tmp->prox);
-
-		Celula *aux=novaCelula(x);
-
-		aux->prox=tmp->prox;
-		tmp->prox=aux;
-	}
-}
-
-Lista* convert(Veiculo *a, int *id, int k){
-	Lista *v2=(Lista*)malloc(sizeof(Lista));
-	v2->primeiro=NULL;
-	v2->ult=NULL;
-
-	for(int j=0;j<k;j++){
-	for(int i=0;i<500;i++){
-		if(a[i].id==id[j]){
-			inserirFim(a[i],v2);
-			i=500;
-		}
-	}
-	}
-	return v2;
-}
-
-Veiculo convertP(Veiculo *v1, int id){
-	for(int i=0;i<500;i++){
-		if(v1[i].id==id){
-			return v1[i];
-		}
-	}
-}
-
-void busca(Lista *v1){
-	for(Celula *i=v1->primeiro;i!=NULL;i=i->prox){
-		formatVeiculo(i->arr);
-	}
-}
-
-int pegaint(char *frase){
-	int soma=0;
-	for(int i=0;i<strleng(frase)-1;i++){
-		soma = soma*10+(frase[i]-'0');
-	}
-	return soma;
-}
-
-void ops(char **operacoes, Lista *v1, int ops2,Veiculo *carro){
-		for(int i=0;i<ops2;i++){
-			char *frase=strtok(operacoes[i], " ");
-			if(frase[0]=='I' && frase[1]=='I'){
-                printf("II\n");
-				frase=strtok(NULL," ");
-				int id=pegaint(frase);
-				inserirIni(convertP(carro, id),v1);
-			}else if(frase[0]=='I' && frase[1]=='F'){
-                printf("IF\n");
-                		frase=strtok(NULL," ");
-				int id=pegaint(frase);
-				inserirFim(convertP(carro, id),v1);
-			}else if(frase[0]=='I' && frase[1]=='*'){
-                printf("I*\n");
-				frase=strtok(NULL," ");
-				int pos=pegaint(frase);
-                frase=strtok(NULL," ");
-				int id=pegaint(frase);
-				inserir(pos,convertP(carro, id),v1);
-			}else if(frase[0]=='R' && frase[1]=='I'){
-				printf("RI\n");
-				tiraIni(v1);
-			}else if(frase[0]=='R' && frase[1]=='F'){
-				printf("RF\n");
-				tiraFim(v1);
-            		}else if(frase[0]=='R' && frase[1]=='*'){
-				printf("R*\n");
-                		frase=strtok(NULL," ");
-				int id=pegaint(frase);
-				tira(id, v1);
-			}
-			
-	
-		if(v1->primeiro!=v1->ult){
-			busca(v1);
-		}
-	}
+    busca(v1);//mostra a lista final de veiculos apos todas as operações
 }
 
 
@@ -474,35 +488,36 @@ int main(){
 	char **frases=NULL,frase[3000];
 	int *vetor=NULL;
 
-	while(scanf("%d", &i)==1 && i!=-1){	
-		vetor=(int *)realloc(vetor, sizeof(int)*(j+1));
+	while(scanf("%d", &i)==1 && i!=-1){//le ate chegar o -1 ou a leitura parar de ser valida
+		vetor=(int *)realloc(vetor, sizeof(int)*(j+1));//aumenta o vetor de maneira dinamica para caber todas as entradas
 		vetor[j]=i;
-		j++;
+		j++;//pega o numero de elementos
 	}
 
-	getchar();
-	v1=convert(carro,vetor,j);
-	
-	int ops2=0;
+	getchar();//buffer de entrada para o teclado
+
+	v1=convert(carro,vetor,j);//converte os ids em veiculos e depois formata na lista
+
+	int ops2=0;//define o numero de operações
 	scanf("%d", &ops2);
-	getchar();	
+	getchar();//buffer de entrada para o teclado
 	
-	frases=(char**)malloc(sizeof(char*)*ops2+1);
+	frases=(char**)malloc(sizeof(char*)*ops2+1);//cria uma matriz dinamica para guardar as requisições
 	for(int i=0;i<ops2;i++){
 		frases[i]=(char *)malloc(sizeof(char)*100);
-	}
+	}//substitutuo de vetor de strings
 
 	int aux=0;
 	
-	while(aux<ops2){
+	while(aux<ops2){//le todas as requisições e as copia para cada linha da matriz
 		fgets(frase,3000,stdin);
 	
-        	strcpy(frases[aux], frase);
+        strcpy(frases[aux], frase);
 		aux++;
 	}
-	ops(frases,v1, ops2,carro);
+	ops(frases,v1, ops2,carro);//começa a chamada para realizar as operações
 
-	free(vetor);
+	free(vetor);//libera o vetor de ids
 
     return 0;
 }
