@@ -1,0 +1,488 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+
+typedef struct {//define o tipo data
+    int dia;
+    int mes;
+    int ano;
+}Data;
+
+int strleng(char frase[]){//metodo que olha o tamanho das strings
+	int i=0;
+	for(; frase[i]!='\0'; i++);
+	return i;//retorna o tamanho
+}
+
+typedef struct{//define o tipo veiculo
+    int id;
+    char marca[1000];
+    char modelo[1000];
+    int ano;
+    char categoria[1000];
+    char combustivel[2][1000];
+    int cilindro;
+    double cilindrada;
+    char transmissao[1000];
+    char tracao[1000];
+    double consumoCidade;
+    double consumoEstrada;
+    double co2;
+    bool turbo;
+    Data dataRegistro;
+}Veiculo;
+
+Data parseData(char *a){//formata os numeros de data
+    Data a1;
+    int soma=0;
+    char *b=strtok(a,"-");//separa a frase
+    
+    for(int i=0;i<strleng(b);i++){//realiza o processo de soma com uma multiplicação caso diferente do ultimo digito
+        soma+=b[i]-'0';
+        if(i+1!=strleng(b))
+        soma*=10;
+    }
+
+    a1.ano=soma;//guarda em ano
+    b=strtok(NULL,"-");
+    soma=0;
+
+    for(int i=0;i<strleng(b);i++){//repete o metodo de guardar ints de ano
+        soma+=b[i]-'0';
+        if(i+1!=strleng(b)){
+        soma*=10;
+	}
+    }
+
+    a1.mes=soma;//guarda em mes
+    b=strtok(NULL,"-");
+    int soma1=0;
+
+    for(int i=0;i<strleng(b)-1;i++){//repete o processo de guardar ints de soma mas sem a separação do if
+        soma1= soma1*10+(b[i]-'0');
+    }
+
+    a1.dia=soma1;//guarda em dia
+    soma=0;
+
+    return a1;//retorna a data formatada
+}
+
+void formatData(Data d1){
+    if(d1.dia<10){//caso dia seja menor que 10 coloca 0 antes do numero
+    printf("0%d/", d1.dia);
+    }else{//caso contrario coloca sem o 0
+    printf("%d/", d1.dia);
+    }
+    if(d1.mes<10){//repete a condição de dia
+    printf("0%d/", d1.mes);
+    }else{
+    printf("%d/", d1.mes);
+    }
+//coloca o ano
+    printf("%d]\n", d1.ano);
+}
+
+Veiculo* parseVeiculo(char *a){
+    Veiculo *v1 = (Veiculo*) malloc (sizeof(Veiculo));
+    char *b;
+    b = strtok(a, ",");//começa a partir a string original em tokens
+    int soma=0;
+    for(int i=0;i<strleng(b);i++){//pega todos os digitos de id e guarda somando
+        soma+=b[i]-'0';
+        if(i+1!=strleng(b)){//caso seja diferente do ultimo digito multiplica por 10
+        soma*=10;
+	}
+    }
+    v1->id=soma;//guarda em soma
+
+    b=strtok(NULL,",");
+    strcpy(v1->marca,b);//copia a string para a marca
+
+    b = strtok(NULL,",");
+    strcpy(v1->modelo,b);//copia a string para o modelo
+
+    b=strtok(NULL,",");
+    soma=0;
+    for(int i=0;i<strleng(b);i++){//repete a leitura de int de id
+        soma+=b[i]-'0';
+        if(i+1!=strleng(b)){
+        soma*=10;
+	}
+    }
+    v1->ano=soma;//guarda em ano
+
+    b=strtok(NULL,",");
+    strcpy(v1->categoria,b);//copia a string para a categoria
+
+    b = strtok(NULL, ",");
+    
+    int j = 0;
+    while(b[j]!='\0' && b[j]!=';'){//procura se existe um ; na parte da string
+	    j++;
+    }
+
+    if(b[j]==';'){//caso tenha ; executa o processo de guardar combustivel
+    b[j]='\0';//separa as strings de combustivel
+
+    strcpy(v1->combustivel[0],b);//copia a primeira string para o primeiro combustivel
+
+    strcpy(v1->combustivel[1],b+j+1);//copia o segundo string para o segundo combustivel
+
+    }else{//caso contrario guarda somente o primeiro combustivel e deixa a segunda string de combustivel como \0
+    strcpy(v1->combustivel[0], b);
+    v1->combustivel[1][0] = '\0';
+    }
+ 
+    b=strtok(NULL,",");
+
+    soma=0;
+
+    for(int i=0;i<strleng(b);i++){//repete o processo de guardar int de id
+        soma+=b[i]-'0';
+        if(i+1!=strleng(b)){
+            soma*=10;
+        }
+    }
+
+    v1->cilindro=soma;//guarda em numero de cilindros
+
+    b=strtok(NULL,",");
+    double soma1=0;
+    soma1+=b[0]-'0';
+    soma1*=10;
+    soma1+=b[2]-'0';
+    //guarda as cilindradas por pegar o digito antes e depois da virgula, multiplicar e somar
+    v1->cilindrada=(soma1/10);//guarda em cilindrada
+    
+    b=strtok(NULL,",");
+    strcpy(v1->transmissao,b);//copia a frase para transmissão
+
+    b=strtok(NULL,",");
+    strcpy(v1->tracao,b);//copia a frase para tracao
+
+    soma1=0;
+    b=strtok(NULL,",");
+    for(int i=0;i<strleng(b);i++){//faz um processo para guardar doubles, que caso chege no . ele irá pular para analisar o proximo numero
+        if(b[i]=='.'){
+            i++;
+        }
+        soma1+=b[i]-'0';
+        if(i+1<strleng(b)){//caso i+1 seja diferente do ultimo multiplica soma para colocar mais digitos
+            soma1*=10;
+        }
+    }
+    v1->consumoCidade=(soma1/100);//guarda a soma dividida de doubles
+    
+    soma1=0;
+    b=strtok(NULL,",");
+    for(int i=0;i<strleng(b);i++){//repete o metodo de consumo cidade
+        if(b[i]=='.'){
+            i++;
+        }
+        soma1+=b[i]-'0';
+        if(i+1<strleng(b)){
+            soma1*=10;
+        }
+    }
+    v1->consumoEstrada=(soma1/100);//guarda em consumo estrada
+
+    b=strtok(NULL,",");
+    if(b[0]=='0'){//caso co2 seja 0, ele já guarda como 0, e não executa
+        v1->co2=0;
+    }else{
+        soma1=0;
+        for(int i=0;i<strleng(b);i++){//faz a leitura dos digitos igual a consumo cidade
+            if(b[i]=='.'){
+                i++;
+            }
+            soma1+=b[i]-'0';
+            if(i+1<strleng(b)){
+                soma1*=10;
+            }
+        }
+        v1->co2=soma1/10;//divide por 10 para pegar o digito decimal
+    }
+
+    b=strtok(NULL,",");//guarda os booleanos
+    if(strcmp(b,"true")==0){
+        v1->turbo=true;
+    }else{
+        v1->turbo=false;
+    }
+   b = strtok(NULL, ",");
+
+v1->dataRegistro = parseData(b);//chama o parseamento de dados de data
+    return v1;//retorna a linha já preparada
+}
+
+void formatVeiculo(Veiculo v){//metodo de mostrar a da maneira formatada se encontrar o veiculo
+    printf("[%d ## %s ## %s ## %d ## %s ##", v.id,v.marca,v.modelo,v.ano,v.categoria);
+
+    printf(" [");//encapsula o combustivel
+    if(v.combustivel[1][0]!='\0'){//se o digito do segundo combustivel não for \0, ira colocar os dois combustiveis
+    printf("%s,", v.combustivel[0]);
+    printf("%s] ## ", v.combustivel[1]);
+
+    }else{//caso contrario não ira fazer isso e coloca somente 1
+        printf("%s] ## ", v.combustivel[0]);
+    }
+//mostra todos com suas devidas casas decimais
+    printf("%d ## %.1lf ## %s ## %s ## %.2lf ## %.2lf ## %.1lf ##", v.cilindro,v.cilindrada,v.transmissao,v.tracao,v.consumoCidade,v.consumoEstrada, v.co2);
+
+    if(v.turbo == true){
+        printf(" true ## ");
+    }else{
+        printf(" false ## ");
+    }
+
+    formatData(v.dataRegistro);//chama o registro de data
+}
+
+Veiculo* Lercsv(char *caminhoArquivo){
+    FILE *f = fopen(caminhoArquivo, "r");//le o caminho do arquivo com um ponteiro para este
+    if(f == NULL){
+	    printf("Erro ao abrir o arquivo \n");//marca o erro de leitura do arquivo
+    }
+    Veiculo *v1=(Veiculo*)malloc(sizeof(Veiculo)*500);//cria a tabela de veiculos 
+    char *b=(char *) malloc (sizeof(char)*1000);//pega as linhas do arquivo
+    int i=0;
+    
+    fgets(b,1000,f);//pula o cabeçario
+    
+    while(fgets(b,1000,f)!=NULL){//le tudo ate o fim do arquivo
+        Veiculo *tmp;
+        tmp=parseVeiculo(b);
+        v1[i]=*tmp;//guarda o conteudo em cada linha
+	free(tmp);//libera o ponteiro de temporario e vai para a proxima linha
+        tmp=NULL;
+        i++;
+    }
+    fclose(f);
+    free(b);
+    b=NULL;
+    return v1;//fecha o arquivo e retorna o vetor
+}
+
+Veiculo* convert(Veiculo *a, int *id, int k){//realiza a converção dos ids para um vetor de veiculos ja formatado
+	Veiculo *v2=(Veiculo*)malloc(sizeof(Veiculo)*k);
+	for(int j=0;j<k;j++){//olha a quatidade de ids que tem
+		for(int i=0;i<500;i++){//procura pelo arquivo
+			if(a[i].id==id[j]){
+				v2[j]=a[i];//caso ache, para o loop e vai para o proximo
+				i=500;
+			}
+		}
+	}
+	return v2;//retorna o novo array montado
+}
+
+void busca(Veiculo *v1,int k){//realiza a mostra de todos os veiculos de um array
+	for(int i=0;i<k;i++){
+		formatVeiculo(v1[i]);
+	}
+}
+
+int strcomp(char *a, char *b){//metodo de comparar strings
+    int i = 0;
+    while(a[i] != '\0' || b[i] != '\0'){
+        char char1 = a[i];//sempre pega o caracter analisado de cada string
+        char char2 = b[i];
+        
+        if(char1>='A' && char1<='Z'){ //converte para minusculo para que tudo seja minusculo nas frases
+            char1=char1+32; 
+        }
+
+        if(char2>='A' && char2<='Z'){
+            char2=char2+32; 
+        }
+        
+	if(char1<char2)//caso a letra da frase 1 seja menor, a frase 2 é maior
+		return -1;//retorna -1
+	if(char1>char2) //caso a letra da frase 2 seja menor, a frase 1 é maior
+		return 1;//retorna 1
+
+	i++;
+    }
+    return 0;
+}
+
+int comparar(Veiculo *v1, Veiculo pivo){
+	//0 -> v1 é numericamente menor que o pivo
+	//1 -> v1 é numericamente maior que o pivo
+	printf("Entrou no cmp\n");
+	printf("consumo estrada\n");
+
+	if(v1->consumoEstrada<pivo.consumoEstrada){
+		printf("v1 %.20lf %.20lf \n", v1->consumoEstrada, pivo.consumoEstrada);
+		return 1;
+	}else if(v1->consumoEstrada>pivo.consumoEstrada){
+		printf("pivo\n");
+		return 0;
+	}
+
+	printf("comparando\n");
+	if(strcomp(v1->marca,pivo.marca)==1){
+		printf("Retornando v1, %s\n", v1->marca);
+		return 1;
+	}else if(strcomp(v1->marca,pivo.marca)==-1){
+		printf("Retornando pivo\n");
+		return 0;
+	}
+
+	printf("cilindro\n");
+
+	if(v1->cilindrada<pivo.cilindrada){
+		printf("%lf\n", v1->cilindrada);
+		return 1;
+	}else if(v1->cilindrada>pivo.cilindrada){
+		printf("Retornando pivo\n");
+		return 0;
+	}
+
+	printf("entrou no id\n");
+
+	if(v1->id<pivo.id){
+		printf("retorna v1 %d\n", v1->id);
+		return 1;
+	}else{
+		printf("retorna pivo\n");
+		return 0;
+	}
+}
+
+
+
+void stringclone(char *dest, char *src){//metodo de copiar strings
+    int i=0;
+    for(; src[i]!='\0'; i++){
+        dest[i]=src[i];
+    }
+    dest[i]='\0';
+}
+
+void Quicksort(Veiculo *v2, int esq, int dir){//realiza a ordenação por quicksort
+	if(esq>=dir){
+        return;
+    	}
+
+	printf("Ta no quicki\n");
+        int i=esq,k=dir;//seta os limites da ordenação
+        double aux1=v2[(i+k)/2].consumoEstrada;
+        aux1+=v2[i].consumoEstrada;
+        aux1+=v2[k].consumoEstrada;
+
+        aux1/=3;
+        
+        Veiculo pivo;//cria o pivo de consumo da cidade baseado na media de 3 de meio e dos limites
+        pivo.consumoEstrada=aux1;
+
+        aux1=0;
+        aux1=v2[(i+k)/2].cilindrada;
+        aux1+=v2[i].cilindrada;
+        aux1+=v2[k].cilindrada;
+
+        aux1/=3;
+
+        pivo.cilindrada=aux1;
+
+        char *p=NULL;
+
+        if(strcomp(v2[i].marca,v2[k].marca)==1){
+            if(strcomp(v2[i].marca,v2[(i+k)/2].marca)==1){
+                if(strcomp((v2+((i+k)/2))->marca, (v2+k)->marca)==1){
+                    p=v2[(i+k)/2].marca;
+                }else{
+                    p=v2[k].marca;
+                }
+            }else{
+                p=v2[i].marca;
+            }
+        }else{
+            if(strcomp((v2+k)->marca,((v2+((i+k)/2))->marca))==1){
+                if(strcomp((v2+((i+k)/2))->marca, (v2+i)->marca)==1){
+                    p=v2[(i+k)/2].marca;
+                }else{
+                    p=v2[i].marca;
+                }
+            }else{
+                p=v2[k].marca;
+            }
+        }
+
+        stringclone(pivo.marca, p);
+
+        int aux2=v2[i].id;
+        aux2+=v2[k].id;
+        aux2+=v2[(i+k)/2].id;
+
+        aux2/=3;
+
+        pivo.id=aux2;
+
+        while(i<=k){//repete enquanto i for menor ou igual a k, para que não se cruzem
+            while(i<=k && (v2[i].consumoEstrada<pivo.consumoEstrada || (v2[i].consumoEstrada==pivo.consumoEstrada && strcomp(v2[i].marca, pivo.marca)==-1) || (v2[i].consumoEstrada==pivo.consumoEstrada && strcomp(v2[i].marca,pivo.marca)==0 && v2[i].id<pivo.id))){	
+                printf("valor de i:%d, %d %s %lf %lf \n", i, v2[i].id,v2[i].marca,v2[i].consumoEstrada, v2[i].cilindrada);
+                printf("%d,%s,%lf %lf \n", pivo.id,pivo.marca,pivo.consumoEstrada, pivo.cilindrada);
+                i++;//continua caminhando enquanto o elemento na posição i for menor que o em consumo na cidade,marca e cilindrada
+            }
+
+            while(k>=i && (v2[k].consumoEstrada>pivo.consumoEstrada || (v2[k].consumoEstrada==pivo.consumoEstrada && strcomp(v2[k].marca, pivo.marca)==1) || (v2[k].consumoEstrada==pivo.consumoEstrada && strcomp(v2[k].marca,pivo.marca)==0 && v2[k].id>pivo.id))){
+                printf("valor de k:%d %d %s %lf\n", k,v2[k].id,v2[k].marca,v2[k].consumoEstrada);
+                printf("%d,%s,%lf %lf\n", pivo.id,pivo.marca,pivo.consumoEstrada,pivo.cilindrada);
+                k--;//continua caminhando enquanto o elemento na posição k for maior que o em consumo na cidade,marca e cilindrada
+            }
+
+
+		printf("%d %d\n", i,k);
+
+            if(i<=k){//caso i seja menor ou igual a k, ele realiza a troca de posições
+               printf("Entrou no swap\n"); 
+		    Veiculo tmp=v2[i];
+		    v2[i]=v2[k];
+		    v2[k]=tmp;
+                
+		    i++;//da continuidade a busca de i e k
+		    k--;
+            }
+        }
+
+        if(esq<k){//caso o limite esquerdo seja menor que k, ele realiza a chamada recursiva da ordenação a esquerda
+            	printf("Ta na esquerda, %d\n", k);
+		Quicksort(v2,esq,k);
+        }
+
+        if(dir>i){//caso o limite direito seja maior que i, ele realiza a chamada recursiva da ordenação a direita
+            	printf("Tá na direitia, %d\n", dir);
+		Quicksort(v2,i,dir);
+        }
+
+}
+
+void Quick(int *vetor, int j, Veiculo *carro){//metodo que chama a ordenação de quicksort e mostra o resultado
+	Veiculo *v2=convert(carro,vetor,j);//converte os ids para um vetor de veiculos
+	
+	Quicksort(v2,0,j-1);//chama a ordenação de quicksort para o vetor de veiculos
+
+	busca(v2,j);//mostra o resultado da ordenação
+
+}
+
+int main(){
+	Veiculo *carro=Lercsv("/tmp/veiculos.csv");//começa a leitura do arquivo
+	int i=0, j=0;
+	int *vetor=NULL;
+	
+	while(scanf("%d", &i)==1 && i!=-1){//le ate -1 ou enquanto o scanf for valido	
+		vetor=(int *)realloc(vetor, sizeof(int)*(j+1));//realiza o aumento dinamico de um vetor para cada chamada
+		vetor[j]=i;
+		j++;
+	}
+
+	Quick(vetor,j,carro);//começa o codigo de ordenar e mostrar
+
+	free(vetor);//libera o vetor
+
+    return 0;
+}
