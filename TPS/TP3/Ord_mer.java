@@ -1,7 +1,7 @@
     import java.util.*;
     import java.io.*;
 
-public class Ord_inser{
+public class Ord_mer{
 	public static class data{
 		private int dia;
 		private int mes;
@@ -461,7 +461,7 @@ public class Ord_inser{
 
 		}
 
-		public void merge(veiculo[] arr,int[] id, int k){//metodo que realiza a ordenação por inserção
+		public void merge(veiculo[] arr,int[] id, int k){//metodo que chama a ordenação por intercalação
 			veiculo[] v1=this.convert(arr,id,k);//converte os ids em veiculos
 			
 			mergesort(0,v1.length-1, v1);
@@ -471,32 +471,114 @@ public class Ord_inser{
 			}
 
 		}
+		public int superior(String a, String b){//metodo para achar a string lexicalmente maior
+			String a1 = "";
+			String b1 = "";
 
-		public void mergesort(int esq,int dir, veiculo[] arr){
-			if(esq<dir){
-				int meio=(dir+esq)/2;
-				mergesort(esq,meio, arr);
-				mergesort(meio+1,dir, arr);
-				intercalar(esq,meio,dir, arr);
+			int i = 0;
+
+			while(i<a.length()){//transforma a string a em minuscula
+				if(a.charAt(i)>='A' && a.charAt(i)<='Z') {
+					a1+=(char) (a.charAt(i)-'A'+'a');
+				}else if(a.charAt(i)!=' '){
+					a1 += a.charAt(i);
+				}
+
+				i++;
+			}
+
+			i = 0;
+
+			while(i<b.length()){//metodo que transforma a string b em minuscula
+				if(b.charAt(i)>='A' && b.charAt(i)<='Z') {
+					b1+=(char) (b.charAt(i)-'A'+'a');
+				}else if(b.charAt(i)!=' '){
+					b1 += b.charAt(i);
+				}
+
+				i++;
+			}
+
+			i = 0;
+
+			while(i<a1.length() && i<b1.length()){//compara cada letra até que uma frase acabe ou retorna caso existe uma das frases seja maior
+				if(a1.charAt(i)>b1.charAt(i)){
+					return 0;
+				}else if(b1.charAt(i)>a1.charAt(i)){
+					return 1;
+				}
+
+				i++;
+			}
+
+			if (a1.length() > b1.length()){//caso o tamanho da primeira frase seja superior, retorna 0
+				return 0;
+			} else if (b1.length() > a1.length()){//caso a segunda seja maior, retorna 1
+				return 1;
+			}
+
+			return 3;//caso sejam iguais retorna 3
+		}
+
+		public void mergesort(int esq,int dir, veiculo[] arr){// metodo de ordenação por intercalação
+			if(esq<dir){//caso o vetor não seja unitario, ele divide o vetor em 2 e chama a função recursivamente
+				int meio= (dir+esq)/2;//calcula o meio do vetor
+				
+				mergesort(esq,meio, arr);//chamada recursiva para a primeira metade do vetor
+				
+				mergesort(meio+1,dir, arr);//chamada recursiva para a segunda metade do vetor
+				
+				intercalar(esq,meio,dir, arr);//junta os dois
 			}
 		}
 
-		public void intercalar(int esq, int meio, int dir, veiculo[] arr){
-			int nEsq = (meio+1)-esq;
+		public void intercalar(int esq, int meio, int dir, veiculo[] arr){//metodo que junta vetores
+			int nEsq = (meio+1)-esq;//cria os limites do vetor original passado
 			int nDir = dir-meio;
 
-			veiculo[] vetE = new veiculo[nEsq], vetD = new veiculo[nDir];
+			veiculo[] vetE = new veiculo[nEsq+1], vetD = new veiculo[nDir+1];//cria os vetores auxiliares para guardar os valores do vetor original
 
-			for(int i=0;i<nEsq;i++){
-				vetE[i]=arr[i];
+			for(int i=0;i<nEsq;i++){//inicializa o vetor da esquerda
+				vetE[i]=arr[esq+i];
 			}
 
-			for(int i=0;i<nDir;i++){
-				vetD[i] = arr[i];
+			for(int i=0;i<nDir;i++){//inicializa o vetor da direita
+				vetD[i] = arr[meio+1+i];
 			}
-			
 
-			
+			int i=esq, aux1=0, aux2=0;//cria os auxiliares para percorrer os vetores
+			while(aux1!=nEsq && aux2!=nDir){
+				if(vetE[aux1].getconsumocid()<vetD[aux2].getconsumocid()){//compara o consumo de cidade e caso o vetor da direita seja maior, coloca o da esquerda no vetor original
+					arr[i]=vetE[aux1++];		
+				}else if(vetE[aux1].getconsumocid()>vetD[aux2].getconsumocid()){//caso o consumo de cidade na esqueda seja maior, ele coloca o direito no vetor original
+					arr[i]=vetD[aux2++];
+				}else{
+					if(superior(vetE[aux1].getcate(),vetD[aux2].getcate())==1){//caso o consumo seja igual, ele compara categorias e caso o vetor esquerdo seja maior, coloca no original o da esquerda
+						arr[i]=vetE[aux1++];
+					}else if(superior(vetE[aux1].getcate(),vetD[aux2].getcate())==0){//caso o vetor da direita seja maior, coloca no original o da direita
+						arr[i]=vetD[aux2++];
+					}else{
+						if(aux1>=vetE.length){//caso os dois sejam iguais, faz a comparação por ordem nas entradas e troca
+							arr[i]=vetD[aux2++];
+						}else{
+							arr[i]=vetE[aux1++];
+						}
+					}
+				}
+				i++;
+			}
+
+			if(aux1==nEsq && aux2!=nDir){//caso um dos vetores acabe, ele coloca o restante do outro vetor no vetor original
+				while(aux2!=nDir){
+					arr[i++]=vetD[aux2++];
+				}
+			}else{
+				while(aux1!=nEsq){
+					arr[i++]=vetE[aux1++];
+				}
+			}
+
+
 		}
 	}
 	public static class leitorCsv{
@@ -506,19 +588,19 @@ public class Ord_inser{
 				int i=0;
 
 				try{//tenta ler o arquivo
-				Scanner lei = new Scanner(arq);//le o arquivo
-				lei.nextLine();//pula a primeira linha do arquivo que é o indice
-				while(lei.hasNextLine()){//le enquanto a linhas
-					String frase = lei.nextLine();//le a linha do arquivo
-					v1[i]=new veiculo();
-					v1[i] = v1[i].parseveiculo(frase);//formata o vetor
-					i++;//guarda em cada casa do vetor
-				}
-				lei.close();//fecha o scanner
-				return v1;//retorna o vetor
+					Scanner lei = new Scanner(arq);//le o arquivo
+					lei.nextLine();//pula a primeira linha do arquivo que é o indice
+					while(lei.hasNextLine()){//le enquanto a linhas
+						String frase = lei.nextLine();//le a linha do arquivo
+						v1[i]=new veiculo();
+						v1[i] = v1[i].parseveiculo(frase);//formata o vetor
+						i++;//guarda em cada casa do vetor
+					}
+					lei.close();//fecha o scanner
+					return v1;//retorna o vetor
 
 				}catch(FileNotFoundException e){//caso não ache ou de erro, fecha o arquivo
-                    e.printStackTrace();
+					e.printStackTrace();
 				}
 				return v1;//fecha ao retornar o que foi feito
 			} 

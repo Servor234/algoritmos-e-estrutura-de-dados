@@ -308,137 +308,91 @@ int strcomp(char *a, char *b){//metodo de comparar strings
     return 0;
 }
 
-int comparar(Veiculo *v1, Veiculo pivo){
-	//0 -> v1 é numericamente menor que o pivo
-	//1 -> v1 é numericamente maior que o pivo
-	printf("Entrou no cmp\n");
-	printf("consumo estrada\n");
-
-	if(v1->consumoEstrada<pivo.consumoEstrada){
-		printf("v1 %.20lf %.20lf \n", v1->consumoEstrada, pivo.consumoEstrada);
-		return 1;
-	}else if(v1->consumoEstrada>pivo.consumoEstrada){
-		printf("pivo\n");
-		return 0;
-	}
-
-	printf("comparando\n");
-	if(strcomp(v1->marca,pivo.marca)==1){
-		printf("Retornando v1, %s\n", v1->marca);
-		return 1;
-	}else if(strcomp(v1->marca,pivo.marca)==-1){
-		printf("Retornando pivo\n");
-		return 0;
-	}
-
-	printf("cilindro\n");
-
-	if(v1->cilindrada<pivo.cilindrada){
-		printf("%lf\n", v1->cilindrada);
-		return 1;
-	}else if(v1->cilindrada>pivo.cilindrada){
-		printf("Retornando pivo\n");
-		return 0;
-	}
-
-	printf("entrou no id\n");
-
-	if(v1->id<pivo.id){
-		printf("retorna v1 %d\n", v1->id);
-		return 1;
-	}else{
-		printf("retorna pivo\n");
-		return 0;
-	}
-}
-
-
-
-void stringclone(char *dest, char *src){//metodo de copiar strings
-    int i=0;
-    for(; src[i]!='\0'; i++){
-        dest[i]=src[i];
-    }
-    dest[i]='\0';
-}
-
 void Quicksort(Veiculo *v2, int esq, int dir){//realiza a ordenação por quicksort
-	if(esq>=dir){
-        return;
-    	}
+	Veiculo pivo;
+	
+	int i=esq,k=dir;//seta os limites da ordenação
 
-	printf("Ta no quicki\n");
-        int i=esq,k=dir;//seta os limites da ordenação
-        double aux1=v2[(i+k)/2].consumoEstrada;
-        aux1+=v2[i].consumoEstrada;
-        aux1+=v2[k].consumoEstrada;
+    int meio = (i + k) / 2;//variavel que calcula o meio para facilitar a visualização no codigo
 
-        aux1/=3;
-        
-        Veiculo pivo;//cria o pivo de consumo da cidade baseado na media de 3 de meio e dos limites
-        pivo.consumoEstrada=aux1;
+    if (v2[i].consumoEstrada > v2[k].consumoEstrada) {//compara se o consumo do primeiro é maior que o do ultimo
+	    if (v2[i].consumoEstrada > v2[meio].consumoEstrada) {//depois compara se o consumo do primeiro é maior que o do meio
+		    if (v2[meio].consumoEstrada > v2[k].consumoEstrada) {//caso seja ele analisa o meio com o fim
+			    pivo = v2[meio];//se for maior ele retorna o meio como pivo
+		    } else {
+			    pivo = v2[k];//caso contrario retorna o menor
+		    }
+	    } else {
+		    pivo = v2[i];//caso o meio seja maior que o primeiro, ele retorna o primeiro como pivo
+	    }
+    } else if (v2[i].consumoEstrada < v2[k].consumoEstrada) {//repete o caso de cima mas com o fim no lugar do inicio
+	    if (v2[k].consumoEstrada > v2[meio].consumoEstrada) {
+		    if (v2[meio].consumoEstrada > v2[i].consumoEstrada) {
+			    pivo = v2[meio];
+		    } else {
+			    pivo = v2[i];
+		    }
+	    } else {
+		    pivo = v2[k];
+	    }
+    }else{//caso o consumo do primeiro e do ultimo sejam iguais, ele analisa a marca para ver qual é lexicalmente maior
+	    if (strcomp(v2[i].marca, v2[k].marca) == 1) {//repete a logia do consumo estrada, mas usando a função de comparação, onde se a primeira for maior, retorna 1 caso constrario retorna -1
+		    if (strcomp(v2[i].marca, v2[meio].marca) == 1) {
+			    if (strcomp(v2[meio].marca, v2[k].marca) == 1) {
+				    pivo = v2[meio];
+			    } else {
+				    pivo = v2[k];
+			    }
+		    } else {
+			    pivo = v2[i];
+		    }
+	    }else if(strcomp(v2[i].marca,v2[k].marca)==-1){
+		    if(strcomp(v2[k].marca, v2[meio].marca) == 1) {
+			    if (strcomp(v2[meio].marca, v2[i].marca) == 1) {
+				    pivo = v2[meio];
+			    } else {
+				    pivo = v2[i];
+			    }
+		    } else {
+			    pivo = v2[k];
+		    }
+	    }else{//caso as duas strings sejam iguais, ele analisa o id para ver qual é maior
+		    if(v2[i].id > v2[k].id) {//repete a logica do consumo estrada, mas usando o id
+			    if(v2[i].id > v2[meio].id){
+				    if (v2[meio].id > v2[k].id){
+					    pivo = v2[meio];
+				    } else {
+					    pivo = v2[k];
+				    }
+			    } else {
+				    pivo = v2[i];
+			    }
+		    } else if (v2[i].id < v2[k].id){
+			    if (v2[k].id > v2[meio].id) {
+				    if (v2[meio].id> v2[i].id) {
+					    pivo = v2[meio];
+				    } else {
+					pivo = v2[i];
+				    }
+			    } else {
+				    pivo = v2[k];
+			    }
 
-        aux1=0;
-        aux1=v2[(i+k)/2].cilindrada;
-        aux1+=v2[i].cilindrada;
-        aux1+=v2[k].cilindrada;
+		    }
+	    }
+    }
 
-        aux1/=3;
-
-        pivo.cilindrada=aux1;
-
-        char *p=NULL;
-
-        if(strcomp(v2[i].marca,v2[k].marca)==1){
-            if(strcomp(v2[i].marca,v2[(i+k)/2].marca)==1){
-                if(strcomp((v2+((i+k)/2))->marca, (v2+k)->marca)==1){
-                    p=v2[(i+k)/2].marca;
-                }else{
-                    p=v2[k].marca;
-                }
-            }else{
-                p=v2[i].marca;
-            }
-        }else{
-            if(strcomp((v2+k)->marca,((v2+((i+k)/2))->marca))==1){
-                if(strcomp((v2+((i+k)/2))->marca, (v2+i)->marca)==1){
-                    p=v2[(i+k)/2].marca;
-                }else{
-                    p=v2[i].marca;
-                }
-            }else{
-                p=v2[k].marca;
-            }
-        }
-
-        stringclone(pivo.marca, p);
-
-        int aux2=v2[i].id;
-        aux2+=v2[k].id;
-        aux2+=v2[(i+k)/2].id;
-
-        aux2/=3;
-
-        pivo.id=aux2;
 
         while(i<=k){//repete enquanto i for menor ou igual a k, para que não se cruzem
-            while(i<=k && (v2[i].consumoEstrada<pivo.consumoEstrada || (v2[i].consumoEstrada==pivo.consumoEstrada && strcomp(v2[i].marca, pivo.marca)==-1) || (v2[i].consumoEstrada==pivo.consumoEstrada && strcomp(v2[i].marca,pivo.marca)==0 && v2[i].id<pivo.id))){	
-                printf("valor de i:%d, %d %s %lf %lf \n", i, v2[i].id,v2[i].marca,v2[i].consumoEstrada, v2[i].cilindrada);
-                printf("%d,%s,%lf %lf \n", pivo.id,pivo.marca,pivo.consumoEstrada, pivo.cilindrada);
+            while(v2[i].consumoEstrada<pivo.consumoEstrada || (v2[i].consumoEstrada==pivo.consumoEstrada && strcomp(v2[i].marca, pivo.marca)==-1) || (v2[i].consumoEstrada==pivo.consumoEstrada && strcomp(v2[i].marca,pivo.marca)==0 && v2[i].id<pivo.id)){	
                 i++;//continua caminhando enquanto o elemento na posição i for menor que o em consumo na cidade,marca e cilindrada
             }
 
-            while(k>=i && (v2[k].consumoEstrada>pivo.consumoEstrada || (v2[k].consumoEstrada==pivo.consumoEstrada && strcomp(v2[k].marca, pivo.marca)==1) || (v2[k].consumoEstrada==pivo.consumoEstrada && strcomp(v2[k].marca,pivo.marca)==0 && v2[k].id>pivo.id))){
-                printf("valor de k:%d %d %s %lf\n", k,v2[k].id,v2[k].marca,v2[k].consumoEstrada);
-                printf("%d,%s,%lf %lf\n", pivo.id,pivo.marca,pivo.consumoEstrada,pivo.cilindrada);
+            while(v2[k].consumoEstrada>pivo.consumoEstrada || (v2[k].consumoEstrada==pivo.consumoEstrada && strcomp(v2[k].marca, pivo.marca)==1) || (v2[k].consumoEstrada==pivo.consumoEstrada && strcomp(v2[k].marca,pivo.marca)==0 && v2[k].id>pivo.id)){
                 k--;//continua caminhando enquanto o elemento na posição k for maior que o em consumo na cidade,marca e cilindrada
             }
 
-
-		printf("%d %d\n", i,k);
-
-            if(i<=k){//caso i seja menor ou igual a k, ele realiza a troca de posições
-               printf("Entrou no swap\n"); 
+            if(i<=k){//caso i seja menor ou igual a k, ele realiza a troca de posições 
 		    Veiculo tmp=v2[i];
 		    v2[i]=v2[k];
 		    v2[k]=tmp;
@@ -449,12 +403,10 @@ void Quicksort(Veiculo *v2, int esq, int dir){//realiza a ordenação por quicks
         }
 
         if(esq<k){//caso o limite esquerdo seja menor que k, ele realiza a chamada recursiva da ordenação a esquerda
-            	printf("Ta na esquerda, %d\n", k);
 		Quicksort(v2,esq,k);
         }
 
         if(dir>i){//caso o limite direito seja maior que i, ele realiza a chamada recursiva da ordenação a direita
-            	printf("Tá na direitia, %d\n", dir);
 		Quicksort(v2,i,dir);
         }
 
